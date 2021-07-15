@@ -9,12 +9,21 @@ public class goToLogin : MonoBehaviour
 {
     // Start is called before the first frame update
     public Button goBackToLogin;
+    public Button submit;
+    public InputField email;
+    public Text notifications;
     void Start()
     {
         goBackToLogin.onClick.AddListener(() =>
         {
-            Debug.Log("enter");
             SceneManager.LoadScene("LoginScene");
+        });
+        submit.onClick.AddListener(() =>
+        {
+            if (string.IsNullOrEmpty(email.text))
+            {
+                notifications.text = "Please enter all fields";
+            }
         });
     }
 
