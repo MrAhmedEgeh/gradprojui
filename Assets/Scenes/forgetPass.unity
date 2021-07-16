@@ -699,7 +699,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 552203914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c68cf8254a6e4b54384c533c9c63ec9d, type: 3}
+  m_Script: {fileID: 11500000, guid: a792307e8dc9f9741b5b1d97a93101d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   goBackToLogin: {fileID: 1906522687}
