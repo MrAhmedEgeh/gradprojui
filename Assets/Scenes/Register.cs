@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
+using EasyUI.Toast;
 public class Register : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -29,22 +30,21 @@ public class Register : MonoBehaviour
                 {
                     if(varifyPassword(pass1.text, pass2.text))
                     {
-                        //RegisterUser(username.text, email.text, pass1.text);
-                        notifications.text = "woooooooow";
+                        StartCoroutine(RegisterUser(username.text, email.text, pass1.text));
                     }
                     else
                     {
-                        notifications.text = "Passwords must match and be 6 digits";
+                        Toast.Show("Passwords must match and be 6 digits", 2f, ToastColor.Red);
                     }
                 }
                 else
                 {
-                    notifications.text = "Please enter a valid email";
+                    Toast.Show("Please enter a valid email", 2f, ToastColor.Red);
                 }
             }
             else
             {
-                notifications.text = "Please enter all fields";
+                Toast.Show("Please enter all fields", 2f, ToastColor.Red);
             }
         });
     }
@@ -89,9 +89,9 @@ public class Register : MonoBehaviour
             else
             {
 
-                if (www.downloadHandler.text.Equals("wrong credentials") || www.downloadHandler.text.Equals("Invalid data"))
+                if (www.downloadHandler.text.Equals("username or email exist"))
                 {
-                    notifications.text = www.downloadHandler.text;
+                    Toast.Show(www.downloadHandler.text, 2f, ToastColor.Red);
                 }
                 else
                 {

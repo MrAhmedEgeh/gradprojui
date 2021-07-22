@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using EasyUI.Toast;
 public class Login : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -12,20 +13,26 @@ public class Login : MonoBehaviour
     public Button loginBtn;    // LOGIN BUTTON FIELD
     public Toggle checkbox;  // REMEMBER ME CHECKBOX
     public Button registerBtn;   // GO TO REGISTER BUTTON
-    public Text notifications;     // A FIELD FOR ERRORS
     public Button forgotPass;   // GO TO FORGET PASSWORD BUTTON
     void Start()
     {
+        if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
+        {
+            StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
+            //PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
+        }
+
         loginBtn.onClick.AddListener(() =>
         {
             if (string.IsNullOrEmpty(username.text) || string.IsNullOrEmpty(password.text))
             {
-                notifications.text = "Please enter all fields";
+                Toast.Show("Please enter all fields", 2f, ToastColor.Red);
             }
             else
             {
                 StartCoroutine(Logins(username.text, password.text));
             }
+
         });
 
         registerBtn.onClick.AddListener(() =>
@@ -57,10 +64,15 @@ public class Login : MonoBehaviour
                 
                 if(www.downloadHandler.text.Equals("wrong credentials") || www.downloadHandler.text.Equals("Invalid data"))
                 {
-                    notifications.text = www.downloadHandler.text;
+                    Toast.Show(www.downloadHandler.text, 2f, ToastColor.Red);
                 }
                 else
                 {
+                    if (checkbox.isOn)
+                    {
+                        PlayerPrefs.SetString("username", username);
+                        PlayerPrefs.SetString("password", password);
+                    }
                     SceneManager.LoadScene("MainMenu");
                 }
                

@@ -2151,5 +2151,4 @@ MonoBehaviour:
   loginBtn: {fileID: 1647392883}
   checkbox: {fileID: 1589461519}
   registerBtn: {fileID: 155145985}
-  notifications: {fileID: 890607269}
   forgotPass: {fileID: 1440345663}
