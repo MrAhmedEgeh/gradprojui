@@ -1,10 +1,14 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using EasyUI.Toast;
+/*
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;*/
+using System.IO;
+
 public class Login : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -14,6 +18,8 @@ public class Login : MonoBehaviour
     public Toggle checkbox;  // REMEMBER ME CHECKBOX
     public Button registerBtn;   // GO TO REGISTER BUTTON
     public Button forgotPass;   // GO TO FORGET PASSWORD BUTTON
+
+    //public Player playerData;
     void Start()
     {
         if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
@@ -68,12 +74,18 @@ public class Login : MonoBehaviour
                 }
                 else
                 {
+                    /*
                     if (checkbox.isOn)
                     {
                         PlayerPrefs.SetString("username", username);
                         PlayerPrefs.SetString("password", password);
                     }
-                    SceneManager.LoadScene("MainMenu");
+                    SceneManager.LoadScene("MainMenu"); */
+
+                    //fetch player's data from player table
+
+                    StartCoroutine(FechPlayerData("2"));
+                    //SceneManager.LoadScene("TheMenu");
                 }
                
             }
@@ -82,6 +94,53 @@ public class Login : MonoBehaviour
     public void goToRegister()
     {
         SceneManager.LoadScene("RegisterScene");
+    }
+
+    // FETCHING PLAYER'S DATA
+    IEnumerator FechPlayerData(string id)
+    {
+        WWWForm reqData = new WWWForm();
+        reqData.AddField("playerid", id);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getPlayer.php", reqData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Player player = JsonUtility.FromJson<Player>(www.downloadHandler.text);
+                Debug.Log(player.playerid);
+                Debug.Log(player.username);
+                Debug.Log(player.level_id);
+                Debug.Log(player.coins);
+                Debug.Log(player.getId());
+                //playerData = new Player();
+
+                /*
+                JsonSerializer jsonSer = new JsonSerializer();
+                StreamReader sr = new StreamReader(www.downloadHandler.text);
+                JsonReader jsonReader = new JsonTextReader(sr);
+                playerData = jsonSer.Deserialize<Player>(jsonReader);*/
+
+                //Debug.Log(playerData);
+
+                /*playerData = JsonUtility.FromJson<Player>(www.downloadHandler.text);
+                Debug.Log(JsonConvert.DeserializeObject<Product>(json));
+                playerData = JsonConvert.DeserializeObject<Player>(www.downloadHandler.text);*/
+
+
+
+                /*
+                Debug.Log(www.downloadHandler.text);
+                Debug.Log("ID: " + Player.playerid);
+                Debug.Log("USERNAME: " + Player.username);
+                Debug.Log("LEVEL: " + Player.level_id);
+                Debug.Log("COINS: " + Player.coins);
+                */
+            }
+        }
     }
 }
 

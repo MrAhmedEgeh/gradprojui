@@ -11,10 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LoginScene.unity
     guid: e2631cc02175520419fbd6cd24488df1
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 09bf0af945ae6be4d8755c1d5f857969
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/forgetPass.unity
     guid: 8dd92118aaf0ec74a969166a5688df21
+  - enabled: 1
+    path: Assets/Scenes/TheMenu.unity
+    guid: 5286dd3e638128d498e7ff853a53dc96
   m_configObjects: {}
