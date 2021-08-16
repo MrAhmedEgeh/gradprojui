@@ -19,7 +19,7 @@ public class Login : MonoBehaviour
     public Button registerBtn;   // GO TO REGISTER BUTTON
     public Button forgotPass;   // GO TO FORGET PASSWORD BUTTON
 
-    //public Player playerData;
+    public static Player playerData;
     void Start()
     {
         if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
@@ -74,18 +74,18 @@ public class Login : MonoBehaviour
                 }
                 else
                 {
-                    /*
+                    
                     if (checkbox.isOn)
                     {
                         PlayerPrefs.SetString("username", username);
                         PlayerPrefs.SetString("password", password);
                     }
-                    SceneManager.LoadScene("MainMenu"); */
+                    SceneManager.LoadScene("MainMenu"); 
 
                     //fetch player's data from player table
 
                     StartCoroutine(FechPlayerData("2"));
-                    //SceneManager.LoadScene("TheMenu");
+                    SceneManager.LoadScene("TheMenu");
                 }
                
             }
@@ -110,12 +110,12 @@ public class Login : MonoBehaviour
             }
             else
             {
-                Player player = JsonUtility.FromJson<Player>(www.downloadHandler.text);
-                Debug.Log(player.playerid);
-                Debug.Log(player.username);
-                Debug.Log(player.level_id);
-                Debug.Log(player.coins);
-                Debug.Log(player.getId());
+                playerData = JsonUtility.FromJson<Player>(www.downloadHandler.text);
+                Debug.Log(playerData.playerid);
+                Debug.Log(playerData.username);
+                Debug.Log(playerData.level_id);
+                Debug.Log(playerData.coins);
+                Debug.Log(playerData.getId());
                 //playerData = new Player();
 
                 /*
