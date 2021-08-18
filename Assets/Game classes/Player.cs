@@ -1,7 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
+using UnityEngine.UI;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 public  class Player
 {
     public  int playerid;
@@ -19,5 +20,28 @@ public  class Player
     public string getId()
     {
         return username;
+    }
+    public void incrementCoins()
+    {
+        this.coins = this.coins + 10;
+
+        updateCoins(this.coins);
+    }
+    IEnumerator updateCoins(int coins)
+    {
+        WWWForm reqData = new WWWForm();
+        reqData.AddField("playerid", coins);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/updateCoins.php", reqData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+               
+            }
+        }
     }
 }

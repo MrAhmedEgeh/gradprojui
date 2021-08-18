@@ -80,12 +80,13 @@ public class Login : MonoBehaviour
                         PlayerPrefs.SetString("username", username);
                         PlayerPrefs.SetString("password", password);
                     }
-                    SceneManager.LoadScene("MainMenu"); 
+                    
 
                     //fetch player's data from player table
 
-                    StartCoroutine(FechPlayerData("2"));
+                    StartCoroutine(FechPlayerData(www.downloadHandler.text));
                     SceneManager.LoadScene("TheMenu");
+                    
                 }
                
             }
@@ -97,7 +98,7 @@ public class Login : MonoBehaviour
     }
 
     // FETCHING PLAYER'S DATA
-    IEnumerator FechPlayerData(string id)
+     IEnumerator FechPlayerData(string id)
     {
         WWWForm reqData = new WWWForm();
         reqData.AddField("playerid", id);
@@ -111,36 +112,16 @@ public class Login : MonoBehaviour
             else
             {
                 playerData = JsonUtility.FromJson<Player>(www.downloadHandler.text);
+                Debug.Log(playerData);
                 Debug.Log(playerData.playerid);
                 Debug.Log(playerData.username);
                 Debug.Log(playerData.level_id);
                 Debug.Log(playerData.coins);
                 Debug.Log(playerData.getId());
-                //playerData = new Player();
-
-                /*
-                JsonSerializer jsonSer = new JsonSerializer();
-                StreamReader sr = new StreamReader(www.downloadHandler.text);
-                JsonReader jsonReader = new JsonTextReader(sr);
-                playerData = jsonSer.Deserialize<Player>(jsonReader);*/
-
-                //Debug.Log(playerData);
-
-                /*playerData = JsonUtility.FromJson<Player>(www.downloadHandler.text);
-                Debug.Log(JsonConvert.DeserializeObject<Product>(json));
-                playerData = JsonConvert.DeserializeObject<Player>(www.downloadHandler.text);*/
-
-
-
-                /*
-                Debug.Log(www.downloadHandler.text);
-                Debug.Log("ID: " + Player.playerid);
-                Debug.Log("USERNAME: " + Player.username);
-                Debug.Log("LEVEL: " + Player.level_id);
-                Debug.Log("COINS: " + Player.coins);
-                */
+                
             }
         }
+        
     }
 }
 
