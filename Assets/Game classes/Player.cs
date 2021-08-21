@@ -14,8 +14,8 @@ public  class Player
     {
         this.playerid = playerid;
         this.username = username;
-        this.level_id = level_id;
-        this.coins = coins;
+        this.level_id = level_id; // MUST HAVE AN UPDATE FUNCTION TO UPDATE DB
+        this.coins = coins; // MUST HAVE AN UPDATE FUNCTION TO UPDATE DB
     }
     public string getId()
     {
@@ -24,7 +24,7 @@ public  class Player
     public void incrementCoins()
     {
         this.coins = this.coins + 10;
-
+        // update function must called to update DB
         updateCoins(this.coins);
     }
     IEnumerator updateCoins(int coins)

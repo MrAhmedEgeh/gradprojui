@@ -20,11 +20,15 @@ public class Login : MonoBehaviour
     public Button forgotPass;   // GO TO FORGET PASSWORD BUTTON
 
     public static Player playerData;
+    public static Levels levelsData;
+    public static Checkpoint checkPointData;
+    public static Statistics statisticsData;
+    public static Weapons weaponsData;
     void Start()
     {
         if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
         {
-            StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
+            //StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
             //PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
         }
 
@@ -74,19 +78,27 @@ public class Login : MonoBehaviour
                 }
                 else
                 {
-                    
+                    /*
                     if (checkbox.isOn)
                     {
                         PlayerPrefs.SetString("username", username);
                         PlayerPrefs.SetString("password", password);
-                    }
+                    }*/
                     
 
                     //fetch player's data from player table
+                    StartCoroutine(FetchPlayerData(www.downloadHandler.text));
+                    //fetch levels data
+                    StartCoroutine(FetchLevelData()); // not done
+                    //fetch checkpoints data
+                    StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
+                    //fetch statistics data
+                    StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
+                    //fetch weapons data
+                    StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
+                    // redirect to menu
+                    //SceneManager.LoadScene("TheMenu");
 
-                    StartCoroutine(FechPlayerData(www.downloadHandler.text));
-                    SceneManager.LoadScene("TheMenu");
-                    
                 }
                
             }
@@ -98,7 +110,7 @@ public class Login : MonoBehaviour
     }
 
     // FETCHING PLAYER'S DATA
-     IEnumerator FechPlayerData(string id)
+     IEnumerator FetchPlayerData(string id)
     {
         WWWForm reqData = new WWWForm();
         reqData.AddField("playerid", id);
@@ -112,16 +124,97 @@ public class Login : MonoBehaviour
             else
             {
                 playerData = JsonUtility.FromJson<Player>(www.downloadHandler.text);
+                /*
                 Debug.Log(playerData);
                 Debug.Log(playerData.playerid);
                 Debug.Log(playerData.username);
                 Debug.Log(playerData.level_id);
                 Debug.Log(playerData.coins);
-                Debug.Log(playerData.getId());
+                Debug.Log(playerData.getId());*/
                 
             }
         }
         
+    }
+    IEnumerator FetchLevelData()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get("http://localhost/gradProjectBackend/Getters/getLevels.php"))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                levelsData = JsonUtility.FromJson<Levels>(www.downloadHandler.text);
+                //Debug.Log(www.downloadHandler.text);
+                //Debug.Log(levelsData.level_id);
+
+
+            }
+        }
+
+    }
+    IEnumerator FetchCheckpointsData(string id)
+    {
+        WWWForm reqData = new WWWForm();
+        reqData.AddField("playerid", id);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getCheckpoints.php", reqData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                checkPointData = JsonUtility.FromJson<Checkpoint>(www.downloadHandler.text);
+                //Debug.Log(checkPointData.checkpoint);
+
+            }
+        }
+
+    }
+    IEnumerator FetchStatisticsData(string id)
+    {
+        WWWForm reqData = new WWWForm();
+        reqData.AddField("playerid", id);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getStatistics.php", reqData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                statisticsData = JsonUtility.FromJson<Statistics>(www.downloadHandler.text);
+                //Debug.Log(statisticsData.numberofdeath);
+
+            }
+        }
+
+    }
+    IEnumerator FetchWeaponsData(string id)
+    {
+        WWWForm reqData = new WWWForm();
+        reqData.AddField("playerid", id);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getWeapons.php", reqData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                weaponsData = JsonUtility.FromJson<Weapons>(www.downloadHandler.text);
+                Debug.Log(weaponsData.weapon_name);
+
+            }
+        }
+
     }
 }
 
