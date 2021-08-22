@@ -4,10 +4,11 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using EasyUI.Toast;
-/*
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;*/
+using Newtonsoft.Json.Linq;
+using Microsoft.CSharp;
 using System.IO;
+using System.Collections.Generic;
 
 public class Login : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class Login : MonoBehaviour
     public Button forgotPass;   // GO TO FORGET PASSWORD BUTTON
 
     public static Player playerData;
-    public static Levels levelsData;
+    public static List<Levels> levelsData;
     public static Checkpoint checkPointData;
     public static Statistics statisticsData;
     public static Weapons weaponsData;
@@ -91,11 +92,11 @@ public class Login : MonoBehaviour
                     //fetch levels data
                     StartCoroutine(FetchLevelData()); // not done
                     //fetch checkpoints data
-                    StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
+                    //StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
                     //fetch statistics data
-                    StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
+                    //StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
                     //fetch weapons data
-                    StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
+                    //StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
                     // redirect to menu
                     //SceneManager.LoadScene("TheMenu");
 
@@ -147,10 +148,13 @@ public class Login : MonoBehaviour
             }
             else
             {
-                levelsData = JsonUtility.FromJson<Levels>(www.downloadHandler.text);
-                //Debug.Log(www.downloadHandler.text);
-                //Debug.Log(levelsData.level_id);
 
+                levelsData = JsonConvert.DeserializeObject<List<Levels>>(www.downloadHandler.text);
+                Debug.Log(levelsData[0].level_id);
+                Debug.Log(levelsData[0].level_name);
+                Debug.Log(levelsData[1].level_id);
+                Debug.Log(levelsData[1].level_name);
+              
 
             }
         }

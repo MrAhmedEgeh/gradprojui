@@ -6,7 +6,7 @@ public class Levels
 {
     public int level_id;
     public string level_name;
-
+   
     public Levels(int level_id, string level_name)
     {
         this.level_id = level_id;
@@ -20,4 +20,5 @@ public class Levels
     {
         return level_name;
     }
+    
 }
