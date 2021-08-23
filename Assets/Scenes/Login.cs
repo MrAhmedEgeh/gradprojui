@@ -22,14 +22,14 @@ public class Login : MonoBehaviour
 
     public static Player playerData;
     public static List<Levels> levelsData;
-    public static Checkpoint checkPointData;
+    public static List<Checkpoint> checkPointData;
     public static Statistics statisticsData;
     public static Weapons weaponsData;
     void Start()
     {
         if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
         {
-            //StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
+            StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
             //PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
         }
 
@@ -79,26 +79,26 @@ public class Login : MonoBehaviour
                 }
                 else
                 {
-                    /*
+                    
                     if (checkbox.isOn)
                     {
                         PlayerPrefs.SetString("username", username);
                         PlayerPrefs.SetString("password", password);
-                    }*/
+                    }
                     
 
                     //fetch player's data from player table
                     StartCoroutine(FetchPlayerData(www.downloadHandler.text));
                     //fetch levels data
-                    StartCoroutine(FetchLevelData()); // not done
+                    StartCoroutine(FetchLevelData()); 
                     //fetch checkpoints data
-                    //StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
+                    StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
                     //fetch statistics data
-                    //StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
+                    StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
                     //fetch weapons data
-                    //StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
+                    StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
                     // redirect to menu
-                    //SceneManager.LoadScene("TheMenu");
+                    SceneManager.LoadScene("TheMenu");
 
                 }
                
@@ -150,11 +150,12 @@ public class Login : MonoBehaviour
             {
 
                 levelsData = JsonConvert.DeserializeObject<List<Levels>>(www.downloadHandler.text);
+                /*
                 Debug.Log(levelsData[0].level_id);
                 Debug.Log(levelsData[0].level_name);
                 Debug.Log(levelsData[1].level_id);
                 Debug.Log(levelsData[1].level_name);
-              
+               */
 
             }
         }
@@ -173,8 +174,16 @@ public class Login : MonoBehaviour
             }
             else
             {
-                checkPointData = JsonUtility.FromJson<Checkpoint>(www.downloadHandler.text);
-                //Debug.Log(checkPointData.checkpoint);
+                checkPointData = JsonConvert.DeserializeObject<List<Checkpoint>>(www.downloadHandler.text);
+                /*
+                Debug.Log(checkPointData[0].playerid);
+                Debug.Log(checkPointData[0].level_id);
+                Debug.Log(checkPointData[0].checkpoint);
+                Debug.Log("--------------------");
+                Debug.Log(checkPointData[1].playerid);
+                Debug.Log(checkPointData[1].level_id);
+                Debug.Log(checkPointData[1].checkpoint);
+                */
 
             }
         }
@@ -214,7 +223,7 @@ public class Login : MonoBehaviour
             else
             {
                 weaponsData = JsonUtility.FromJson<Weapons>(www.downloadHandler.text);
-                Debug.Log(weaponsData.weapon_name);
+                //Debug.Log(weaponsData.weapon_name);
 
             }
         }
