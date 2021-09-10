@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,31 +15,33 @@ public class PlayerMovement : MonoBehaviour
 	bool jump = false;
 	bool crouch = false;
 
+
+
 	// Update is called once per frame
 	void Update()
 	{
 
-		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+		horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
 		animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
 
-		if (Input.GetButtonDown("Jump"))
+		if (CrossPlatformInputManager.GetButtonDown("Jump") || Input.GetButtonDown("Jump"))
 		{
 			jump = true;
 			animator.SetBool("IsJumping", true);
 		}
 
-		if (Input.GetButtonDown("Crouch"))
+		if (CrossPlatformInputManager.GetButtonDown("Crouch") || Input.GetButtonDown("Crouch"))
 		{
 			crouch = true;
 			animator.SetBool("IsCrouching", true);
 		}
-		else if (Input.GetButtonUp("Crouch"))
+		else if (CrossPlatformInputManager.GetButtonUp("Crouch") || Input.GetButtonUp("Crouch"))
 		{
 			crouch = false;
 			animator.SetBool("IsCrouching", false);
 		}
-
+		
 	}
 	public void OnLanding()
     {
@@ -54,5 +58,16 @@ public class PlayerMovement : MonoBehaviour
 		// Move our character
 		controller.Move(horizontalMove * Time.fixedDeltaTime, crouch, jump);
 		jump = false;
+	}
+
+	public void crouchBtnUp()
+    {
+		crouch = false;
+		animator.SetBool("IsCrouching", false);
+	}
+	public void crouchBtnDown()
+	{
+		crouch = true;
+		animator.SetBool("IsCrouching", true);
 	}
 }
