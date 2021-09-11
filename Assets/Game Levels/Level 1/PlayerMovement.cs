@@ -14,9 +14,9 @@ public class PlayerMovement : MonoBehaviour
 	float horizontalMove = 0f;
 	bool jump = false;
 	bool crouch = false;
-
-
-
+	int currentWeaponLyr = 0;
+	int attackCounter;
+	int moblatkcounter;
 	// Update is called once per frame
 	void Update()
 	{
@@ -40,6 +40,25 @@ public class PlayerMovement : MonoBehaviour
 		{
 			crouch = false;
 			animator.SetBool("IsCrouching", false);
+		}
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+			changeWeaponLyr();
+
+		}
+        if (Input.GetKeyDown(KeyCode.E) && (attackCounter != 1 && attackCounter != 2))
+        {
+			Attack1();
+			attackCounter = 1;
+		}else if (Input.GetKeyDown(KeyCode.E) && attackCounter != 2)
+        {
+			Attack2();
+			attackCounter = 2;
+		}else if (Input.GetKeyDown(KeyCode.E) && attackCounter != 3)
+        {
+			Attack3();
+			attackCounter = 0;
 		}
 		
 	}
@@ -69,5 +88,69 @@ public class PlayerMovement : MonoBehaviour
 	{
 		crouch = true;
 		animator.SetBool("IsCrouching", true);
+	}
+	public void attackBtnDown()
+    {
+		
+		if (moblatkcounter != 1 && moblatkcounter != 2)
+		{
+			Attack1();
+			moblatkcounter = 1;
+		}
+		else if (moblatkcounter != 2)
+		{
+			Attack2();
+			moblatkcounter = 2;
+		}
+		else if ( moblatkcounter != 3)
+		{
+			Attack3();
+			moblatkcounter = 0;
+		}
+	}
+	public void chooseIdleLyr()
+    {
+		animator.SetLayerWeight(0, 1);
+		animator.SetLayerWeight(1, 0);
+	}
+	public void chooseSwordLyr()
+	{
+		animator.SetLayerWeight(0, 0);
+		animator.SetLayerWeight(1, 1);
+	}
+	
+	public void changeWeaponLyr()
+    {
+        if (currentWeaponLyr == 0)
+        {
+			currentWeaponLyr += 1;
+			animator.SetLayerWeight(currentWeaponLyr - 1, 0);
+			animator.SetLayerWeight(currentWeaponLyr, 1);
+        }
+        else
+        {
+			currentWeaponLyr -= 1;
+			animator.SetLayerWeight(currentWeaponLyr + 1, 0);
+			animator.SetLayerWeight(currentWeaponLyr, 1);
+		}
+    }
+
+	void Attack1()
+    {
+		// Play animation of Attack 1
+		animator.SetTrigger("att1");
+
+    }
+	void Attack2()
+	{
+		// Play animation of Attack 2
+		animator.SetTrigger("att2");
+
+	}
+	void Attack3()
+	{
+		// Play animation of Attack 3
+		animator.SetTrigger("att3");
+
 	}
 }
