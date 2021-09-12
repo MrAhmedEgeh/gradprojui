@@ -6,6 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMovement : MonoBehaviour
 {
+	public static PlayerMovement instance;
 
 	public CharacterController2D controller;
 	public Animator animator;
@@ -17,8 +18,13 @@ public class PlayerMovement : MonoBehaviour
 	int currentWeaponLyr = 0;
 	int attackCounter;
 	int moblatkcounter;
-	// Update is called once per frame
-	void Update()
+    // Update is called once per frame
+
+    private void Awake()
+    {
+		instance = this;
+    }
+    void Update()
 	{
 
 		horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
@@ -152,5 +158,14 @@ public class PlayerMovement : MonoBehaviour
 		// Play animation of Attack 3
 		animator.SetTrigger("att3");
 
+	}
+
+	public /*IEnumerator*/ void PlayerDeath()
+    {
+		/*
+		animator.SetBool("isDead", true);
+		yield return new WaitForSeconds(animation["die"].clip.length);
+		*/
+		DieMenu.instance.dieMenu();
 	}
 }
