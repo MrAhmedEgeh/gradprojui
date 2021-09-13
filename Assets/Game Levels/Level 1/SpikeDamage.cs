@@ -6,11 +6,6 @@ public class SpikeDamage : MonoBehaviour
 {
     private PlayerHealth health;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -21,9 +16,10 @@ public class SpikeDamage : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            PlayerHealth.instance.TakeDamage();
-            
-            Debug.Log("Hit");
+           PlayerHealth.instance.TakeDamage();
+            StartCoroutine(PlyerSpikeKnock.instance.Knockback(0.02f, 290, GameObject.Find("Player").transform.position));
+
+           
         }
     }
 }

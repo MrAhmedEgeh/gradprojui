@@ -12,8 +12,9 @@ public class DieMenu : MonoBehaviour
     {
         instance = this;
     }
-    public void dieMenu()
+    public IEnumerator dieMenu()
     {
+        yield return new WaitForSeconds(0.8f);
         dieMenuObj.SetActive(true);
         Time.timeScale = 0f;
     }

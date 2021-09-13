@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
 	public Animator animator;
 	public float runSpeed = 40f;
 
+
+
 	float horizontalMove = 0f;
 	bool jump = false;
 	bool crouch = false;
@@ -23,7 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
 		instance = this;
+
     }
+  
     void Update()
 	{
 
@@ -160,12 +164,11 @@ public class PlayerMovement : MonoBehaviour
 
 	}
 
-	public /*IEnumerator*/ void PlayerDeath()
+	public void PlayerDeath()
     {
-		/*
+		
 		animator.SetBool("isDead", true);
-		yield return new WaitForSeconds(animation["die"].clip.length);
-		*/
-		DieMenu.instance.dieMenu();
+		
 	}
+
 }
