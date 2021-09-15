@@ -26,7 +26,7 @@ public class PlyerSpikeKnock : MonoBehaviour
 
 			timer += Time.deltaTime;
 			
-			rb2d.AddForce(new Vector3(knockbackDir.x * -100, Mathf.Abs(knockbackDir.y * knockbackPwr), transform.position.z));
+			rb2d.AddForce(new Vector3(knockbackDir.x * -30, Mathf.Abs(knockbackDir.y * knockbackPwr), transform.position.z));
 
 		}
 

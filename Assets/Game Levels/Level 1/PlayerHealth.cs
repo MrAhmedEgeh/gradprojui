@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
 public class PlayerHealth : MonoBehaviour
@@ -35,7 +36,10 @@ public class PlayerHealth : MonoBehaviour
             // player Die animation
             PlayerMovement.instance.PlayerDeath();
             // DIE MENU APPEARS
-            StartCoroutine(DieMenu.instance.dieMenu());
+            // StartCoroutine(DieMenu.instance.dieMenu());
+
+            // Restart Scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
