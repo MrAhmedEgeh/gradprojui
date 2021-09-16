@@ -8,6 +8,7 @@ TagManager:
   - heart
   - Checkpoint
   - ConstantSaver
+  - Enemy
   layers:
   - Default
   - TransparentFX
