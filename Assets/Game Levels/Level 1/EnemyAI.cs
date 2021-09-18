@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
+
 public class EnemyAI : MonoBehaviour
 {
     //Reference to waypoints
@@ -79,7 +79,26 @@ public class EnemyAI : MonoBehaviour
 
     void AttackPlayer()
     {
-        anim.SetBool("skull_att1", true);
+        
+        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // if player is in range attack him
+        {
+            // Attack animation COMPO
+            anim.SetBool("skull_att1", true);
+
+        }
+        else
+        {
+            // if the distance between enemy and point[0] or point[1] is bigger than distance between enemy and player go back to patrol
+            if (Vector2.Distance(transform.position, points[0].transform.position) > Vector2.Distance(transform.position, GameObject.Find("Player").transform.position))
+            {
+                IsMoveToNextPoint = true;
+            }
+            else if (Vector2.Distance(transform.position, points[1].transform.position) > Vector2.Distance(transform.position, GameObject.Find("Player").transform.position))
+            {
+                IsMoveToNextPoint = true;
+            }
+        }
+        
         if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 2f ) // if player is not close chase him
         {
             anim.SetBool("skull_att1", false);

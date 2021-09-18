@@ -42,4 +42,21 @@ public class PlayerHealth : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+
+    public void TakeFixedDamage(int x)
+    {
+        currentHealth -= x;
+        hearts[currentHealth + 1].enabled = false;
+
+        if (currentHealth <= -1)
+        {
+            // player Die animation
+            PlayerMovement.instance.PlayerDeath();
+            // DIE MENU APPEARS
+            // StartCoroutine(DieMenu.instance.dieMenu());
+
+            // Restart Scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
 }
