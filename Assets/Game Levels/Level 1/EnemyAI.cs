@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Threading;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -80,45 +80,39 @@ public class EnemyAI : MonoBehaviour
     void AttackPlayer()
     {
         
-        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // if player is in range attack him
+       if(Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // is player in range for attack?
         {
-            // Attack animation COMPO
-            anim.SetBool("skull_att1", true);
-
-        }
-        else
-        {
-            // if the distance between enemy and point[0] or point[1] is bigger than distance between enemy and player go back to patrol
-            if (Vector2.Distance(transform.position, points[0].transform.position) > Vector2.Distance(transform.position, GameObject.Find("Player").transform.position))
-            {
-                IsMoveToNextPoint = true;
-            }
-            else if (Vector2.Distance(transform.position, points[1].transform.position) > Vector2.Distance(transform.position, GameObject.Find("Player").transform.position))
-            {
-                IsMoveToNextPoint = true;
-            }
-        }
-        
-        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) > 2f ) // if player is not close chase him
-        {
-            anim.SetBool("skull_att1", false);
+            /*
+            // get closer to player
             transform.position = Vector2.MoveTowards(transform.position, GameObject.Find("Player").transform.position, speed * Time.deltaTime);
 
+            // Play run animation
+            anim.SetFloat("skull_run", speed);
 
-            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // if player is in range attack him
+            // if enemy is close to player
+            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 1.5f)
+            {
+                anim.SetFloat("skull_run", 0);
+                anim.SetBool("skull_att1", true);
+            }
+            */
+            anim.SetFloat("skull_run", 0f);
+            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f)
             {
                 anim.SetBool("skull_att1", true);
             }
 
-            // if the distance between enemy and point[0] or point[1] is bigger than distance between enemy and player go back to patrol
-            if(Vector2.Distance(transform.position, points[0].transform.position) > Vector2.Distance(transform.position, GameObject.Find("Player").transform.position))
-            {
-                IsMoveToNextPoint = true;
-            }else if (Vector2.Distance(transform.position, points[1].transform.position) > Vector2.Distance(transform.position, GameObject.Find("Player").transform.position))
-            {
-                IsMoveToNextPoint = true;
-            }
+        }
+        else
+        {
+            // disable attack animation
+            anim.SetBool("skull_att1", false);
 
+            // go to patrol
+            IsMoveToNextPoint = true;
+
+            //enable running
+            anim.SetFloat("skull_run", speed);
         }
     }
 

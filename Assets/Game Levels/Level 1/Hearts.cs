@@ -8,10 +8,10 @@ public class Hearts : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("heart"))
         {
-            Debug.Log("Enter");
+            
             if (PlayerHealth.instance.currentHealth < 5)
             {
-                Debug.Log(PlayerHealth.instance.currentHealth);
+                
 
                 // Grab current Health counter (1 - 5)
                 int index = PlayerHealth.instance.currentHealth;
