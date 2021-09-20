@@ -12,6 +12,7 @@ TagManager:
   - StartPT
   - EndPT
   - AttackCheck
+  - skull_enemy
   layers:
   - Default
   - TransparentFX

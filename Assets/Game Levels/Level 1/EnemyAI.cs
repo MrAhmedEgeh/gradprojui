@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
-
+using UnityEngine.UI;
 public class EnemyAI : MonoBehaviour
 {
     //Reference to waypoints
@@ -17,16 +17,30 @@ public class EnemyAI : MonoBehaviour
     public static EnemyAI instance;
     public bool Attack;
     bool IsMoveToNextPoint = true;
+
+    public bool latency = true;
+
+    public int EnemyCurrentHealth = 4, EnemyMaxHealth;
+
+
     private void Awake()
     {
         instance = this;
         Attack = false;
     }
 
+    void Start()
+    {
+        EnemyMaxHealth = EnemyCurrentHealth;
+        
+
+
+    }
+
     private void Update()
     {
-
-
+        
+        
         if (IsMoveToNextPoint == true)
         {
             MoveToNextPoint();
@@ -80,27 +94,16 @@ public class EnemyAI : MonoBehaviour
     void AttackPlayer()
     {
         
+        
        if(Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // is player in range for attack?
         {
-            /*
-            // get closer to player
-            transform.position = Vector2.MoveTowards(transform.position, GameObject.Find("Player").transform.position, speed * Time.deltaTime);
 
-            // Play run animation
-            anim.SetFloat("skull_run", speed);
-
-            // if enemy is close to player
-            if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 1.5f)
-            {
-                anim.SetFloat("skull_run", 0);
-                anim.SetBool("skull_att1", true);
-            }
-            */
             anim.SetFloat("skull_run", 0f);
             if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f)
             {
                 anim.SetBool("skull_att1", true);
             }
+            
 
         }
         else
@@ -115,6 +118,19 @@ public class EnemyAI : MonoBehaviour
             anim.SetFloat("skull_run", speed);
         }
     }
+    public void EnemyTakeDamage()
+    {
+        EnemyCurrentHealth -= 1;
+        if (EnemyCurrentHealth <= 0)
+        {
+            // Enemy Die animation
+          
+            anim.SetBool("skull_die", true);
+            Destroy(gameObject, 0.333333f);
+
+        }
+    }
+
 
 
 }
