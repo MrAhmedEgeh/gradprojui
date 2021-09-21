@@ -16,6 +16,8 @@ public class PlayerCheckpoints : MonoBehaviour
         {
             anim.SetBool("mkFires", true);
             sv.lastCheckPointPos = transform.position;
+            // update checkpoint
+            Login.checkPointData[0].setCheckpoint(sv.lastCheckPointPos.ToString());
         }
     }
 }

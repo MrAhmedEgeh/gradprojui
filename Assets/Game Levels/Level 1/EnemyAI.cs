@@ -22,7 +22,9 @@ public class EnemyAI : MonoBehaviour
 
     public int EnemyCurrentHealth = 4, EnemyMaxHealth;
 
+    bool enemyDead = false;
 
+    public GameObject LastEnemy;
     private void Awake()
     {
         instance = this;
@@ -32,15 +34,26 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         EnemyMaxHealth = EnemyCurrentHealth;
-        
+        LastEnemy = GameObject.Find("Enemy (17)");
 
 
     }
 
     private void Update()
     {
-        
-        
+        if (!LastEnemy.activeSelf)
+        {
+            if (Login.playerData.playerid != 2)
+            {
+                // Add new line for checkpoint table using setter
+                StartCoroutine(Login.checkPointData[0].InsertNewLine(Login.playerData.playerid, 2, "0,0"));
+                // Update Level_id to 2 in player table
+                Login.playerData.setLevelID(2);
+                // Update coins  in player table
+                Login.playerData.setCoins(Coins.score);
+            }
+        }
+
         if (IsMoveToNextPoint == true)
         {
             MoveToNextPoint();
@@ -93,7 +106,10 @@ public class EnemyAI : MonoBehaviour
 
     void AttackPlayer()
     {
-        
+        if(enemyDead == true)
+        {
+            return;
+        }
         
        if(Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // is player in range for attack?
         {
@@ -123,15 +139,14 @@ public class EnemyAI : MonoBehaviour
         EnemyCurrentHealth -= 1;
         if (EnemyCurrentHealth <= 0)
         {
-            // Enemy Die animation
-          
+            if(enemyDead == true) { return; }
+
             anim.SetBool("skull_die", true);
-            Destroy(gameObject, 0.333333f);
+            Destroy(gameObject);
+
 
         }
     }
-
-
 
 }
 

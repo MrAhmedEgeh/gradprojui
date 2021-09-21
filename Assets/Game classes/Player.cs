@@ -1,9 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
-public  class Player
+public  class Player:MonoBehaviour
 {
     public  int playerid;
     public  string username;
@@ -17,16 +15,36 @@ public  class Player
         this.level_id = level_id; // MUST HAVE AN UPDATE FUNCTION TO UPDATE DB
         this.coins = coins; // MUST HAVE AN UPDATE FUNCTION TO UPDATE DB
     }
-    public string getId()
+    public int getId()
+    {
+        return playerid;
+    }
+    public string getUsername()
     {
         return username;
     }
-    public void incrementCoins()
+    public int getLevel_ID()
     {
-        this.coins = this.coins + 10;
-        // update function must called to update DB
-        updateCoins(this.coins);
+        return level_id;
     }
+    public int getCoins()
+    {
+        return coins;
+    }
+    // SETTERS
+    public void setLevelID(int id)
+    {
+        this.level_id = id;
+        // update in db
+        StartCoroutine(updateLevelID(level_id));
+    }
+    public void setCoins(int coins)
+    {
+        this.coins = coins;
+        // update in db
+        StartCoroutine(updateCoins(coins));
+    }
+
     IEnumerator updateCoins(int coins)
     {
         WWWForm reqData = new WWWForm();
@@ -41,6 +59,23 @@ public  class Player
             else
             {
                
+            }
+        }
+    }
+    IEnumerator updateLevelID(int levelid)
+    {
+        WWWForm reqData = new WWWForm();
+        reqData.AddField("levelid", levelid);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/updateLevelID.php", reqData))
+        {
+            yield return www.SendWebRequest();
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+
             }
         }
     }
