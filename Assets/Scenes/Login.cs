@@ -29,8 +29,8 @@ public class Login : MonoBehaviour
     {
         if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
         {
-            StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
-            //PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
+           // StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
+            PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
         }
 
         loginBtn.onClick.AddListener(() =>
@@ -98,7 +98,7 @@ public class Login : MonoBehaviour
                     //fetch weapons data
                     StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
                     // redirect to menu
-                    SceneManager.LoadScene("TheMenu");
+                   SceneManager.LoadScene("TheMenu");
 
                 }
                
@@ -163,6 +163,7 @@ public class Login : MonoBehaviour
     }
     IEnumerator FetchCheckpointsData(string id)
     {
+        Debug.Log(id);
         WWWForm reqData = new WWWForm();
         reqData.AddField("playerid", id);
         using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getCheckpoints.php", reqData))
@@ -175,15 +176,15 @@ public class Login : MonoBehaviour
             else
             {
                 checkPointData = JsonConvert.DeserializeObject<List<Checkpoint>>(www.downloadHandler.text);
-                /*
-                Debug.Log(checkPointData[0].playerid);
+
+                Debug.Log(checkPointData[0]);
                 Debug.Log(checkPointData[0].level_id);
                 Debug.Log(checkPointData[0].checkpoint);
                 Debug.Log("--------------------");
                 Debug.Log(checkPointData[1].playerid);
                 Debug.Log(checkPointData[1].level_id);
                 Debug.Log(checkPointData[1].checkpoint);
-                */
+                
 
             }
         }

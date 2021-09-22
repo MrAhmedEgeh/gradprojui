@@ -14,18 +14,25 @@ public class TheMenuInfo :  MonoBehaviour
    void Start()
     {
 
-        playername.text = "Player: " + Login.playerData.username;
-        playerlevel.text = "Level: " + Login.playerData.level_id.ToString();
-        playercoin.text = Login.playerData.coins.ToString();
-        /* need to add :Login first
-        playername.text = "Player: " + playerData.username;
-        playerlevel.text = "Level: " + playerData.level_id.ToString();
-        playercoin.text = playerData.coins.ToString();*/
-        logout.onClick.AddListener(() =>
+        if (Login.playerData != null || PlayerPrefs.HasKey("username"))
         {
-            PlayerPrefs.DeleteAll();
+            playername.text = "Player: " + Login.playerData.username;
+            playerlevel.text = "Level: " + (Login.playerData.level_id - 1).ToString();
+            playercoin.text = Login.playerData.coins.ToString();
+            /* need to add :Login first
+            playername.text = "Player: " + playerData.username;
+            playerlevel.text = "Level: " + playerData.level_id.ToString();
+            playercoin.text = playerData.coins.ToString();*/
+            logout.onClick.AddListener(() =>
+            {
+                PlayerPrefs.DeleteAll();
+                SceneManager.LoadScene("LoginScene");
+            });
+        }
+        else if(Login.playerData == null || !PlayerPrefs.HasKey("username"))
+        {
             SceneManager.LoadScene("LoginScene");
-        });
+        }
 
     }
 }

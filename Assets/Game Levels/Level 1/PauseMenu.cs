@@ -19,6 +19,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void MainMenu()
     {
+        Coins.score = 0;
         Time.timeScale = 1f;
         SceneManager.LoadScene("TheMenu");
     }

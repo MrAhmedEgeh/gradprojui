@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class EnemyAI : MonoBehaviour
 {
     //Reference to waypoints
@@ -24,7 +25,8 @@ public class EnemyAI : MonoBehaviour
 
     bool enemyDead = false;
 
-    public GameObject LastEnemy;
+    public static GameObject LastEnemy;
+
     private void Awake()
     {
         instance = this;
@@ -34,23 +36,36 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         EnemyMaxHealth = EnemyCurrentHealth;
-        LastEnemy = GameObject.Find("Enemy (17)");
 
+        LastEnemy = GameObject.Find("Enemy (15)").transform.GetChild(0).gameObject;
 
     }
 
     private void Update()
     {
-        if (!LastEnemy.activeSelf)
+        if (LastEnemy == null) // if last enemy is not alive
         {
-            if (Login.playerData.playerid != 2)
+            if (Login.playerData != null && Login.playerData.level_id < 2)  // if player id is less than 2
             {
-                // Add new line for checkpoint table using setter
-                StartCoroutine(Login.checkPointData[0].InsertNewLine(Login.playerData.playerid, 2, "0,0"));
+                Debug.Log("wooooooooow 2");
+                if (Login.checkPointData[1] == null) // if player haven't played this level before
+                {
+                    // Add new line for checkpoint table using checkpoint class
+                    StartCoroutine(Login.checkPointData[0].InsertNewLine(Login.playerData.playerid, 2, "0,0"));
+                }
                 // Update Level_id to 2 in player table
+                StartCoroutine(Login.playerData.updateLevelID(Login.playerData.playerid, 2));
                 Login.playerData.setLevelID(2);
                 // Update coins  in player table
+                StartCoroutine(Login.playerData.updateCoins(Login.playerData.playerid, Coins.score));
                 Login.playerData.setCoins(Coins.score);
+                // win message panel
+                winMenu.instance.wineMenu();
+            }
+            else
+            {
+                Debug.Log("SOMETHING WENT WRONG");
+                winMenu.instance.wineMenu();
             }
         }
 
@@ -110,6 +125,16 @@ public class EnemyAI : MonoBehaviour
         {
             return;
         }
+
+        // enemy look direction
+        if (GameObject.Find("Player").transform.position.x > transform.position.x)
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            transform.eulerAngles = new Vector3(0, -180, 0);
+        }
         
        if(Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 2f) // is player in range for attack?
         {
@@ -147,6 +172,7 @@ public class EnemyAI : MonoBehaviour
 
         }
     }
+
 
 }
 

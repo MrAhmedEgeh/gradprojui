@@ -3,12 +3,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 
-public class Checkpoint:MonoBehaviour
+public class Checkpoint
 {
     public int playerid;
     public int level_id; // MUST HAVE AN UPDATE FUNCTION TO UPDATE DB
     public string checkpoint; // MUST HAVE AN UPDATE FUNCTION TO UPDATE DB
-
+    private MonoBehaviour mono;
     public Checkpoint(int playerid, int level_id, string checkpoint)
     {
         this.playerid = playerid;
@@ -24,13 +24,15 @@ public class Checkpoint:MonoBehaviour
     {
         this.checkpoint = point;
         // update function must called to update DB
-        StartCoroutine(UpdateCheckpointDB(checkpoint));
+        mono.StartCoroutine(UpdateCheckpointDB(level_id, playerid, checkpoint));
     }
 
-    IEnumerator UpdateCheckpointDB(string checkpt)
+    IEnumerator UpdateCheckpointDB(int level_id, int playerid, string checkpt)
     {
         WWWForm form = new WWWForm();
-        form.AddField("checkpt", checkpt);
+        form.AddField("levelID", level_id);
+        form.AddField("playerid", playerid);
+        form.AddField("point", checkpt);
         using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Updaters/updateCheckpoint.php", form))
         {
             yield return www.SendWebRequest();
@@ -39,17 +41,17 @@ public class Checkpoint:MonoBehaviour
             {
                 Debug.Log(www.error);
             }
-            
+
         }
     }
 
-   public IEnumerator InsertNewLine(int playerid, int level_id, string checkpoint)
+    public IEnumerator InsertNewLine(int playerid, int level_id, string checkpoint)
     {
         WWWForm form = new WWWForm();
         form.AddField("playerid", playerid);
-        form.AddField("level_id", level_id);
-        form.AddField("checkpoint", checkpoint);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Inserters/insertCheckpoint.php", form))
+        form.AddField("levelID", level_id);
+        form.AddField("point", checkpoint);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Inserters/newRecordCheckpoint.php", form))
         {
             yield return www.SendWebRequest();
 

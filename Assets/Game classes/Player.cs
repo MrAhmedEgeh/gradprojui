@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-public  class Player:MonoBehaviour
+public  class Player
 {
     public  int playerid;
     public  string username;
     public  int level_id;
     public  int coins;
-
+    private MonoBehaviour mono;
     public Player(int playerid, string username, int level_id, int coins)
     {
         this.playerid = playerid;
@@ -35,21 +35,18 @@ public  class Player:MonoBehaviour
     public void setLevelID(int id)
     {
         this.level_id = id;
-        // update in db
-        StartCoroutine(updateLevelID(level_id));
     }
     public void setCoins(int coins)
     {
         this.coins = coins;
-        // update in db
-        StartCoroutine(updateCoins(coins));
     }
 
-    IEnumerator updateCoins(int coins)
+    public IEnumerator updateCoins(int playerid, int coins)
     {
         WWWForm reqData = new WWWForm();
-        reqData.AddField("playerid", coins);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/updateCoins.php", reqData))
+        reqData.AddField("playerid", playerid);
+        reqData.AddField("coins", coins);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Updaters/updatePlayerCoins.php", reqData))
         {
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
@@ -62,11 +59,12 @@ public  class Player:MonoBehaviour
             }
         }
     }
-    IEnumerator updateLevelID(int levelid)
+    public IEnumerator updateLevelID(int playerid, int levelid)
     {
         WWWForm reqData = new WWWForm();
-        reqData.AddField("levelid", levelid);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/updateLevelID.php", reqData))
+        reqData.AddField("playerid", playerid);
+        reqData.AddField("levelID", levelid);
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Updaters/updatePlayerLevelID.php", reqData))
         {
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
