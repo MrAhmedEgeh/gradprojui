@@ -19,7 +19,7 @@ public class EnemyAI : MonoBehaviour
     public bool Attack;
     bool IsMoveToNextPoint = true;
 
-    public bool latency = true;
+    public float latency = 3f;
 
     public int EnemyCurrentHealth = 4, EnemyMaxHealth;
 

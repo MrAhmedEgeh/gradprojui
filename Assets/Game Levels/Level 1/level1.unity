@@ -1701,7 +1701,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113980395}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.944191, y: -0.8299999, z: -9}
+  m_LocalPosition: {x: 5.9295187, y: -0.8299999, z: -9}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10881,6 +10881,7 @@ GameObject:
   - component: {fileID: 403020668}
   - component: {fileID: 403020669}
   - component: {fileID: 403020670}
+  - component: {fileID: 403020671}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -11187,6 +11188,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   winMenuObj: {fileID: 200098786}
+--- !u!114 &403020671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403020656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd1557cee34e69e40a1a42f92ba35989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: {fileID: 1444803310}
 --- !u!1 &404054912
 GameObject:
   m_ObjectHideFlags: 0
@@ -11803,7 +11817,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 463113926}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &463113926
@@ -13026,7 +13040,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 561853339}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &561853339
@@ -13736,7 +13750,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 629292244}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &629292244
@@ -17588,7 +17602,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 909994109}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &909994109
@@ -18039,7 +18053,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 921890126}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!58 &921890128
@@ -18849,7 +18863,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 998040420}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &998040420
@@ -20271,7 +20285,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1189325057}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1189325057
@@ -22218,7 +22232,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1409031765}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1409031765
@@ -22859,7 +22873,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1442613167}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1442613167
@@ -23519,7 +23533,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1499620902}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1499620902
@@ -24541,7 +24555,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1632241308}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1632241308
@@ -24987,7 +25001,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1658654711}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1658654711
@@ -25710,7 +25724,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1681216981}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1681216981
@@ -25902,7 +25916,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1684982891}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1684982891
@@ -27387,7 +27401,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844449723}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.944191, y: -0.8299999, z: -9}
+  m_LocalPosition: {x: 5.9295187, y: -0.8299999, z: -9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 861300022}
@@ -29436,7 +29450,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1987011792}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1987011792
@@ -29771,7 +29785,7 @@ MonoBehaviour:
   speed: 2
   anim: {fileID: 1992366008}
   Attack: 0
-  latency: 1
+  latency: 3
   EnemyCurrentHealth: 4
   EnemyMaxHealth: 0
 --- !u!95 &1992366008

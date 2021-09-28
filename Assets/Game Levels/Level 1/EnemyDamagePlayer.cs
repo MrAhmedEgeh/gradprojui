@@ -4,21 +4,29 @@ using UnityEngine;
 
 public class EnemyDamagePlayer : MonoBehaviour
 {
+    private float cooldownTime = 6f;
+    private float nextDamage;
 
-     void OnTriggerEnter2D(Collider2D collision)
+
+    private void Start()
+    {
+        nextDamage = Time.time + 2f;
+    }
+    void OnTriggerEnter2D(Collider2D collision)
     {
 
 
-        if (collision.tag == "Player" && gameObject.transform.parent.GetComponent<EnemyAI>().latency == true)
+        if (collision.tag == "Player")
         {
 
-        Debug.Log("Player detected");
-        // Take damage function
-        PlayerHealth.instance.TakeFixedDamage(1);
-            gameObject.transform.parent.GetComponent<EnemyAI>().latency = !gameObject.transform.parent.GetComponent<EnemyAI>().latency;
-            // Knock back function
-            StartCoroutine(PlyerSpikeKnock.instance.Knockback(0.2f, 50, GameObject.Find("Player").transform.position));
-
+            if (Time.time > nextDamage)
+            {
+                nextDamage = Time.time + cooldownTime;
+                // Take damage function
+                PlayerHealth.instance.TakeFixedDamage(1);
+                // Knock back function
+                StartCoroutine(PlyerSpikeKnock.instance.Knockback(0.2f, 50, GameObject.Find("Player").transform.position));
+            }
 
 
         }
