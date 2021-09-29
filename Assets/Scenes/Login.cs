@@ -92,7 +92,7 @@ public class Login : MonoBehaviour
                     //fetch levels data
                     StartCoroutine(FetchLevelData()); 
                     //fetch checkpoints data
-                    StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
+                   // StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
                     //fetch statistics data
                     StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
                     //fetch weapons data
