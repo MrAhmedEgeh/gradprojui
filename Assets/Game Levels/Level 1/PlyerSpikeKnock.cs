@@ -26,6 +26,26 @@ public class PlyerSpikeKnock : MonoBehaviour
 
 			timer += Time.deltaTime;
 			
+			rb2d.AddForce(new Vector3(knockbackDir.x * -5, Mathf.Abs(knockbackDir.y) * knockbackPwr, transform.position.z));
+
+		}
+
+		yield return 0;
+
+	}
+	public IEnumerator FixedKnockback(Vector3 knockbackDir)
+	{
+
+		float timer = 0;
+		float knockDur = 0.2f;
+		float knockbackPwr = 5;
+
+
+		while (knockDur > timer)
+		{
+
+			timer += Time.deltaTime;
+
 			rb2d.AddForce(new Vector3(knockbackDir.x * -20, Mathf.Abs(knockbackDir.y) * knockbackPwr, transform.position.z));
 
 		}

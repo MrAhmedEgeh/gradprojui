@@ -21,9 +21,8 @@ public class EnemyAI : MonoBehaviour
 
     public float latency = 3f;
 
-    public int EnemyCurrentHealth = 4, EnemyMaxHealth;
+    public int EnemyCurrentHealth = 3, EnemyMaxHealth;
 
-    bool enemyDead = false;
 
     public static GameObject LastEnemy;
 
@@ -77,6 +76,13 @@ public class EnemyAI : MonoBehaviour
         {
             AttackPlayer();
         }
+        if (EnemyCurrentHealth <= 0)
+        {
+            anim.SetBool("skull_die", true);
+            Destroy(gameObject, 0.617f);
+
+
+        }
 
     }
 
@@ -121,11 +127,6 @@ public class EnemyAI : MonoBehaviour
 
     void AttackPlayer()
     {
-        if(enemyDead == true)
-        {
-            return;
-        }
-
         // enemy look direction
         if (GameObject.Find("Player").transform.position.x > transform.position.x)
         {
@@ -161,16 +162,7 @@ public class EnemyAI : MonoBehaviour
     }
     public void EnemyTakeDamage()
     {
-        EnemyCurrentHealth -= 1;
-        if (EnemyCurrentHealth <= 0)
-        {
-            if(enemyDead == true) { return; }
-
-            anim.SetBool("skull_die", true);
-            Destroy(gameObject);
-
-
-        }
+        EnemyCurrentHealth -= 3;
     }
 
 

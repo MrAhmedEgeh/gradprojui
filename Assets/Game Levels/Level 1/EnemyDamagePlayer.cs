@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyDamagePlayer : MonoBehaviour
 {
-    private float cooldownTime = 6f;
+    private float cooldownTime = 4f;
     private float nextDamage;
 
 
@@ -25,7 +25,8 @@ public class EnemyDamagePlayer : MonoBehaviour
                 // Take damage function
                 PlayerHealth.instance.TakeFixedDamage(1);
                 // Knock back function
-                StartCoroutine(PlyerSpikeKnock.instance.Knockback(0.2f, 50, GameObject.Find("Player").transform.position));
+                //StartCoroutine(PlyerSpikeKnock.instance.Knockback(0.2f, 50, GameObject.Find("Player").transform.position));
+                StartCoroutine(PlyerSpikeKnock.instance.FixedKnockback(GameObject.Find("Player").transform.position));
             }
 
 
