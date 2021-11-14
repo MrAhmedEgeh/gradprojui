@@ -53,4 +53,9 @@ public class PlyerSpikeKnock : MonoBehaviour
 		yield return 0;
 
 	}
+	public IEnumerator Test()
+    {
+		rb2d.AddForce(new Vector3(rb2d.transform.position.x * -100, Mathf.Abs(rb2d.transform.position.y) * 100, rb2d.transform.position.z));
+		yield return 0;
+	}
 }

@@ -18,6 +18,12 @@ public class PlayerDamageEnemy : MonoBehaviour
         }else if (collision.tag == "bat")
         {
             collision.gameObject.GetComponent<BatAI>().BatTakeDamage();
+        }else if (collision.tag == "skull")
+        {
+            collision.gameObject.GetComponent<SkullAI>().EnemyTakeDamage();
+        }else if (collision.tag == "boss")
+        {
+            collision.gameObject.GetComponent<BossAI>().BossTakeDamage();
         }
     }
 }
