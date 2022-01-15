@@ -12,11 +12,7 @@ public class PlayerCheckpoints : MonoBehaviour
         {
             anim.SetBool("mkFires", true);
             ConstantSaver.lastCheckPointPos = transform.position;
-            // update checkpoint
-            if (Login.playerData != null)
-            {
-                Login.checkPointData[0].setCheckpoint(ConstantSaver.lastCheckPointPos.ToString());
-            }
+            
         }
     }
 }

@@ -33,12 +33,6 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= -1)
         {
-            // player Die animation
-            PlayerMovement.instance.PlayerDeath();
-            // DIE MENU APPEARS
-            // StartCoroutine(DieMenu.instance.dieMenu());
-
-            // Restart Scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }

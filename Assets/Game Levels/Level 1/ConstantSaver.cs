@@ -21,23 +21,7 @@ public class ConstantSaver : MonoBehaviour
     }
     private void Start()
     {
-        if (Login.playerData != null)
-        {
-            Debug.Log(toVector2("-0.89,-2.25").ToString());
-            lastCheckPointPos = toVector2(Login.checkPointData[0].checkpoint);
-            
-        }
-        else
-        {
-            lastCheckPointPos = new Vector2(-0.89f, -2.25f);
-        }
-    }
-    public Vector2 toVector2(string x)
-    {
-        string[] temp = x.Split(',');
-        Vector2 vec = new Vector2(int.Parse(temp[0]), int.Parse(temp[1]));
-
-        return vec;
+        lastCheckPointPos = new Vector2(-0.89f, -2.25f);
     }
 
 }

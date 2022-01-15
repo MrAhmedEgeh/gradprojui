@@ -10,6 +10,7 @@ public class Coins : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("coin"))
         {
+            AudioManager.instance.playPlayerPickCoinsSound();
             score++;
             Score.text = score.ToString();
             Destroy(collision.gameObject);

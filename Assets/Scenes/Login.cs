@@ -9,6 +9,13 @@ using Newtonsoft.Json.Linq;
 using Microsoft.CSharp;
 using System.IO;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using UnityStandardAssets.CrossPlatformInput;
+using System.Collections.Specialized;
+using System.Text;
 
 public class Login : MonoBehaviour
 {
@@ -22,15 +29,14 @@ public class Login : MonoBehaviour
 
     public static Player playerData;
     public static List<Levels> levelsData;
-    public static List<Checkpoint> checkPointData;
-    public static Statistics statisticsData;
-    public static Weapons weaponsData;
+    public static List<Scoring> scoreData;
+
     void Start()
     {
         if(PlayerPrefs.HasKey("username") && PlayerPrefs.HasKey("password"))
         {
-           // StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
-            PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
+           StartCoroutine(Logins(PlayerPrefs.GetString("username"), PlayerPrefs.GetString("password")));
+            //PlayerPrefs.DeleteAll();  // WILL BE USED IN THE LOGOUT
         }
 
         loginBtn.onClick.AddListener(() =>
@@ -41,7 +47,8 @@ public class Login : MonoBehaviour
             }
             else
             {
-                StartCoroutine(Logins(username.text, password.text));
+                //StartCoroutine(Logins(username.text, password.text));
+                PostForm(username.text, password.text);
             }
 
         });
@@ -62,7 +69,7 @@ public class Login : MonoBehaviour
         form.AddField("loginUser", username);
         form.AddField("loginPass", password);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Login/Login.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://gradproject.site/cgi-bin/Login.php", form))
         {
             yield return www.SendWebRequest();
 
@@ -91,20 +98,16 @@ public class Login : MonoBehaviour
                     StartCoroutine(FetchPlayerData(www.downloadHandler.text));
                     //fetch levels data
                     StartCoroutine(FetchLevelData()); 
-                    //fetch checkpoints data
-                   // StartCoroutine(FetchCheckpointsData(www.downloadHandler.text));
-                    //fetch statistics data
-                    StartCoroutine(FetchStatisticsData(www.downloadHandler.text));
-                    //fetch weapons data
-                    StartCoroutine(FetchWeaponsData(www.downloadHandler.text));
-                    // redirect to menu
-                   SceneManager.LoadScene("TheMenu");
+                    // fetch scoring
+                    StartCoroutine(FetchScoringData(www.downloadHandler.text));
+
 
                 }
                
             }
         }
     }
+
     public void goToRegister()
     {
         SceneManager.LoadScene("RegisterScene");
@@ -115,7 +118,7 @@ public class Login : MonoBehaviour
     {
         WWWForm reqData = new WWWForm();
         reqData.AddField("playerid", id);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getPlayer.php", reqData))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://gradproject.site/cgi-bin/getPlayer.php", reqData))
         {
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
@@ -131,15 +134,15 @@ public class Login : MonoBehaviour
                 Debug.Log(playerData.username);
                 Debug.Log(playerData.level_id);
                 Debug.Log(playerData.coins);
-                Debug.Log(playerData.getId());*/
-                
+                Debug.Log(playerData.getId());
+                */
             }
         }
         
     }
     IEnumerator FetchLevelData()
     {
-        using (UnityWebRequest www = UnityWebRequest.Get("http://localhost/gradProjectBackend/Getters/getLevels.php"))
+        using (UnityWebRequest www = UnityWebRequest.Get("https://gradproject.site/cgi-bin/getLevels.php"))
         {
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
@@ -150,23 +153,23 @@ public class Login : MonoBehaviour
             {
 
                 levelsData = JsonConvert.DeserializeObject<List<Levels>>(www.downloadHandler.text);
-                /*
+                
                 Debug.Log(levelsData[0].level_id);
                 Debug.Log(levelsData[0].level_name);
                 Debug.Log(levelsData[1].level_id);
                 Debug.Log(levelsData[1].level_name);
-               */
+               
 
             }
         }
 
     }
-    IEnumerator FetchCheckpointsData(string id)
+
+    IEnumerator FetchScoringData(string id)
     {
-        Debug.Log(id);
         WWWForm reqData = new WWWForm();
         reqData.AddField("playerid", id);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getCheckpoints.php", reqData))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://gradproject.site/cgi-bin/getScores.php", reqData))
         {
             yield return www.SendWebRequest();
             if (www.result != UnityWebRequest.Result.Success)
@@ -175,60 +178,164 @@ public class Login : MonoBehaviour
             }
             else
             {
-                checkPointData = JsonConvert.DeserializeObject<List<Checkpoint>>(www.downloadHandler.text);
+                scoreData = JsonConvert.DeserializeObject<List<Scoring>>(www.downloadHandler.text);
+                Debug.Log(scoreData[0].playerid);
+                Debug.Log(scoreData[0].level_id);
+                Debug.Log(scoreData[0].score);
 
-                Debug.Log(checkPointData[0]);
-                Debug.Log(checkPointData[0].level_id);
-                Debug.Log(checkPointData[0].checkpoint);
-                Debug.Log("--------------------");
-                Debug.Log(checkPointData[1].playerid);
-                Debug.Log(checkPointData[1].level_id);
-                Debug.Log(checkPointData[1].checkpoint);
-                
+                // redirect to menu
+                SceneManager.LoadScene("TheMenu");
 
             }
         }
 
     }
-    IEnumerator FetchStatisticsData(string id)
+    /*---------------TESTING PART---------------------------------------*/
+    void PostForm(string username, string password)
     {
-        WWWForm reqData = new WWWForm();
-        reqData.AddField("playerid", id);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getStatistics.php", reqData))
-        {
-            yield return www.SendWebRequest();
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                statisticsData = JsonUtility.FromJson<Statistics>(www.downloadHandler.text);
-                //Debug.Log(statisticsData.numberofdeath);
+        ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
 
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://gradproject.site/cgi-bin/Login.php");
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.Method = "POST";
+        Stream dataStream = request.GetRequestStream();
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("loginUser", username);
+        nvc.Add("loginPass", password);
+        System.Text.StringBuilder postVars = new StringBuilder();
+        foreach (string key in nvc)
+            postVars.AppendFormat("{0}={1}&", key, nvc[key]);
+        postVars.Length -= 1; // clip off the remaining &
+
+        //This
+
+        using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            streamWriter.Write(postVars.ToString());
+        Debug.Log(postVars.ToString());
+
+        WebResponse response = request.GetResponse();
+        dataStream = response.GetResponseStream();
+        // Open the stream using a StreamReader for easy access.
+        StreamReader reader = new StreamReader(dataStream);
+        // Read the content.
+        string responseFromServer = reader.ReadToEnd();
+        if (responseFromServer.Equals("wrong credentials") || responseFromServer.Equals("Invalid data"))
+        {
+            Toast.Show(responseFromServer, 2f, ToastColor.Red);
+        }
+        else
+        {
+            if (checkbox.isOn)
+            {
+                PlayerPrefs.SetString("username", username);
+                PlayerPrefs.SetString("password", password);
             }
+            FetchLevelData2();
+            FetchPlayerData2(responseFromServer);
+            FetchScoringData2(responseFromServer);
         }
 
     }
-    IEnumerator FetchWeaponsData(string id)
+
+    private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
     {
-        WWWForm reqData = new WWWForm();
-        reqData.AddField("playerid", id);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Getters/getWeapons.php", reqData))
-        {
-            yield return www.SendWebRequest();
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                weaponsData = JsonUtility.FromJson<Weapons>(www.downloadHandler.text);
-                //Debug.Log(weaponsData.weapon_name);
+        // all Certificates are accepted
+        return true;
+    }
+    void FetchLevelData2()
+    {
+        ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
 
-            }
-        }
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://gradproject.site/cgi-bin/getLevels.php");
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.Method = "GET";
+        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        Stream receiveStream = response.GetResponseStream();
+        StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
 
+        string responseFromServer = readStream.ReadToEnd();
+
+        levelsData = JsonConvert.DeserializeObject<List<Levels>>(responseFromServer);
+        /*
+        Debug.Log(levelsData[0].level_id);
+        Debug.Log(levelsData[0].level_name);
+        Debug.Log(levelsData[1].level_id);
+        Debug.Log(levelsData[1].level_name);
+        */
+    }
+    void FetchPlayerData2(string id)
+    {
+        ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://gradproject.site/cgi-bin/getPlayer.php");
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.Method = "POST";
+        Stream dataStream = request.GetRequestStream();
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("playerid", id);
+        System.Text.StringBuilder postVars = new StringBuilder();
+        foreach (string key in nvc)
+            postVars.AppendFormat("{0}={1}&", key, nvc[key]);
+        postVars.Length -= 1; // clip off the remaining &
+
+        //This
+
+        using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            streamWriter.Write(postVars.ToString());
+        Debug.Log(postVars.ToString());
+
+        WebResponse response = request.GetResponse();
+        dataStream = response.GetResponseStream();
+        // Open the stream using a StreamReader for easy access.
+        StreamReader reader = new StreamReader(dataStream);
+        // Read the content.
+        string responseFromServer = reader.ReadToEnd();
+       
+        playerData = JsonUtility.FromJson<Player>(responseFromServer);
+        /*
+        Debug.Log(playerData);
+        Debug.Log(playerData.playerid);
+        Debug.Log(playerData.username);
+        Debug.Log(playerData.level_id);
+        Debug.Log(playerData.coins);
+        Debug.Log(playerData.getId());
+        */
+    }
+    void FetchScoringData2(string id)
+    {
+        ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://gradproject.site/cgi-bin/getScores.php");
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.Method = "POST";
+        Stream dataStream = request.GetRequestStream();
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("playerid", id);
+        System.Text.StringBuilder postVars = new StringBuilder();
+        foreach (string key in nvc)
+            postVars.AppendFormat("{0}={1}&", key, nvc[key]);
+        postVars.Length -= 1; // clip off the remaining &
+
+        //This
+
+        using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            streamWriter.Write(postVars.ToString());
+        Debug.Log(postVars.ToString());
+
+        WebResponse response = request.GetResponse();
+        dataStream = response.GetResponseStream();
+        // Open the stream using a StreamReader for easy access.
+        StreamReader reader = new StreamReader(dataStream);
+        // Read the content.
+        string responseFromServer = reader.ReadToEnd();
+
+        scoreData = JsonConvert.DeserializeObject<List<Scoring>>(responseFromServer);
+        Debug.Log(scoreData[0].playerid);
+        Debug.Log(scoreData[0].level_id);
+        Debug.Log(scoreData[0].score);
+
+        // redirect to menu
+       SceneManager.LoadScene("TheMenu");
     }
 }
 

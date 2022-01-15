@@ -11,8 +11,9 @@ public class Hearts : MonoBehaviour
             
             if (PlayerHealth.instance.currentHealth < 5)
             {
-                
 
+                // play heart pick up sound
+                AudioManager.instance.playPlayerPickHeartSound();
                 // Grab current Health counter (1 - 5)
                 int index = PlayerHealth.instance.currentHealth;
                 // Enable last heart

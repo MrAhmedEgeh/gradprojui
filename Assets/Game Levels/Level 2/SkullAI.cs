@@ -56,9 +56,9 @@ public class SkullAI : MonoBehaviour
 
         if (EnemyCurrentHealth <= 0)
         {
+           
             anim.SetBool("skull_die", true);
             Destroy(gameObject, 0.617f);
-
 
         }
     }
@@ -146,6 +146,10 @@ public class SkullAI : MonoBehaviour
 
     public void EnemyTakeDamage()
     {
+        if (EnemyCurrentHealth == 2)
+        {
+            ScoreHandler.score = ScoreHandler.score + 1;
+        }
         EnemyCurrentHealth -= 2;
     }
 }

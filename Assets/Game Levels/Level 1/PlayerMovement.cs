@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
 	public float runSpeed = 40f;
 
 
-
 	float horizontalMove = 0f;
 	bool jump = false;
 	bool crouch = false;
@@ -34,11 +33,11 @@ public class PlayerMovement : MonoBehaviour
 		horizontalMove = CrossPlatformInputManager.GetAxisRaw("Horizontal") * runSpeed;
 		animator.SetFloat("Speed", Mathf.Abs(horizontalMove));
 
-
 		if (CrossPlatformInputManager.GetButtonDown("Jump") || Input.GetButtonDown("Jump"))
 		{
 			jump = true;
 			animator.SetBool("IsJumping", true);
+			AudioManager.instance.playPlayerJumpSound();
 		}
 
 		if (CrossPlatformInputManager.GetButtonDown("Crouch") || Input.GetButtonDown("Crouch"))
@@ -57,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
 			changeWeaponLyr();
 
 		}
+
         if (Input.GetKeyDown(KeyCode.E) && (attackCounter != 1 && attackCounter != 2))
         {
 			Attack1();
@@ -149,19 +149,22 @@ public class PlayerMovement : MonoBehaviour
     {
 		// Play animation of Attack 1
 		animator.SetTrigger("att1");
+		AudioManager.instance.playPlayerSwordSound();
 
-    }
+
+	}
 	void Attack2()
 	{
 		// Play animation of Attack 2
 		animator.SetTrigger("att2");
+		AudioManager.instance.playPlayerSwordSound();
 
 	}
 	void Attack3()
 	{
 		// Play animation of Attack 3
 		animator.SetTrigger("att3");
-
+		AudioManager.instance.playPlayerSwordSound();
 	}
 
 	public void PlayerDeath()

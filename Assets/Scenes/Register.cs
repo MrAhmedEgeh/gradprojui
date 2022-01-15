@@ -6,6 +6,14 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using EasyUI.Toast;
+
+using System.IO;
+
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Collections.Specialized;
+using System.Text;
 public class Register : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -30,7 +38,8 @@ public class Register : MonoBehaviour
                 {
                     if(varifyPassword(pass1.text, pass2.text))
                     {
-                        StartCoroutine(RegisterUser(username.text, email.text, pass1.text));
+                        // StartCoroutine(RegisterUser(username.text, email.text, pass1.text));
+                        RegisterUser2(username.text, email.text, pass1.text);
                     }
                     else
                     {
@@ -78,7 +87,7 @@ public class Register : MonoBehaviour
         form.AddField("emails", emails);
         form.AddField("password", password);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/gradProjectBackend/Register/Register.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("https://gradproject.site/cgi-bin/Register.php", form))
         {
             yield return www.SendWebRequest();
 
@@ -100,5 +109,53 @@ public class Register : MonoBehaviour
 
             }
         }
+    }
+
+    void RegisterUser2(string username, string emails, string password)
+    {
+        ServicePointManager.ServerCertificateValidationCallback = TrustCertificate;
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://gradproject.site/cgi-bin/Register.php");
+        request.ContentType = "application/x-www-form-urlencoded";
+        request.Method = "POST";
+        Stream dataStream = request.GetRequestStream();
+        NameValueCollection nvc = new NameValueCollection();
+        nvc.Add("username", username);
+        nvc.Add("emails", emails);
+        nvc.Add("password", password);
+
+        System.Text.StringBuilder postVars = new StringBuilder();
+        foreach (string key in nvc)
+            postVars.AppendFormat("{0}={1}&", key, nvc[key]);
+        postVars.Length -= 1; // clip off the remaining &
+
+        //This
+
+        using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            streamWriter.Write(postVars.ToString());
+        Debug.Log(postVars.ToString());
+
+        WebResponse response = request.GetResponse();
+        dataStream = response.GetResponseStream();
+        // Open the stream using a StreamReader for easy access.
+        StreamReader reader = new StreamReader(dataStream);
+        // Read the content.
+        string responseFromServer = reader.ReadToEnd();
+        if (responseFromServer.Equals("username or email exist"))
+        {
+            Toast.Show(responseFromServer, 2f, ToastColor.Red);
+        }
+        else
+        {
+            Toast.Show("Check your email", 2f, ToastColor.Red);
+            SceneManager.LoadScene("LoginScene");
+        }
+
+    }
+
+    private static bool TrustCertificate(object sender, X509Certificate x509Certificate, X509Chain x509Chain, SslPolicyErrors sslPolicyErrors)
+    {
+        // all Certificates are accepted
+        return true;
     }
 }

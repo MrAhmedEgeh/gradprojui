@@ -14,7 +14,7 @@ public class PlayerDamageEnemy : MonoBehaviour
                 // Damage enemy
                 collision.gameObject.GetComponent<EnemyAI>().EnemyTakeDamage();
             }*/
-            collision.gameObject.GetComponent<EnemyAI>().EnemyTakeDamage();
+           // collision.gameObject.GetComponent<EnemyAI>().EnemyTakeDamage();
         }else if (collision.tag == "bat")
         {
             collision.gameObject.GetComponent<BatAI>().BatTakeDamage();
